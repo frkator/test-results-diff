@@ -22,3 +22,7 @@ Simplified analysis of test reports between builds with a single change:
  - different implementations of components
  - compiler upgrade
  - version bumps
+ 
+ Notice
+ -
+ [byte-buddy](https://github.com/raphw/byte-buddy) test reports are used to test the functionality.
