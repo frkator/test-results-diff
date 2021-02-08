@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="net.bytebuddy.agent.ByteBuddyAgentAttachmentProviderTest" time="0.334" tests="5" errors="0" skipped="0" failures="2">
+  <properties>
+    <property name="java.specification.version" value="16"/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.class.path" value="/home/isipka/workspace/byte-buddy/byte-buddy-agent/target/test-classes:/home/isipka/workspace/byte-buddy/byte-buddy-agent/target/classes:/home/isipka/.m2/repository/net/java/dev/jna/jna/5.3.1/jna-5.3.1.jar:/home/isipka/.m2/repository/net/java/dev/jna/jna-platform/5.3.1/jna-platform-5.3.1.jar:/home/isipka/.m2/repository/junit/junit/4.13.1/junit-4.13.1.jar:/home/isipka/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:/home/isipka/.m2/repository/org/mockito/mockito-core/2.23.0/mockito-core-2.23.0.jar:/home/isipka/.m2/repository/org/objenesis/objenesis/2.6/objenesis-2.6.jar:/home/isipka/.m2/repository/net/bytebuddy/byte-buddy/1.10.18/byte-buddy-1.10.18.jar:/home/isipka/.m2/repository/com/google/code/findbugs/findbugs-annotations/3.0.1/findbugs-annotations-3.0.1.jar:"/>
+    <property name="java.vm.vendor" value="Oracle Corporation"/>
+    <property name="net.bytebuddy.experimental" value="false"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="java.vendor.url" value="https://java.oracle.com/"/>
+    <property name="os.name" value="Linux"/>
+    <property name="java.vm.specification.version" value="16"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="user.country" value="IE"/>
+    <property name="sun.boot.library.path" value="/home/isipka/.sdkman/candidates/java/16.ea.26-open/lib"/>
+    <property name="sun.java.command" value="/home/isipka/workspace/byte-buddy/byte-buddy-agent/target/surefire/surefirebooter6741899004431466297.jar /home/isipka/workspace/byte-buddy/byte-buddy-agent/target/surefire 2021-02-06T16-20-31_706-jvmRun1 surefire15421425021246521371tmp surefire_010124123876654160617tmp"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="surefire.test.class.path" value="/home/isipka/workspace/byte-buddy/byte-buddy-agent/target/test-classes:/home/isipka/workspace/byte-buddy/byte-buddy-agent/target/classes:/home/isipka/.m2/repository/net/java/dev/jna/jna/5.3.1/jna-5.3.1.jar:/home/isipka/.m2/repository/net/java/dev/jna/jna-platform/5.3.1/jna-platform-5.3.1.jar:/home/isipka/.m2/repository/junit/junit/4.13.1/junit-4.13.1.jar:/home/isipka/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:/home/isipka/.m2/repository/org/mockito/mockito-core/2.23.0/mockito-core-2.23.0.jar:/home/isipka/.m2/repository/org/objenesis/objenesis/2.6/objenesis-2.6.jar:/home/isipka/.m2/repository/net/bytebuddy/byte-buddy/1.10.18/byte-buddy-1.10.18.jar:/home/isipka/.m2/repository/com/google/code/findbugs/findbugs-annotations/3.0.1/findbugs-annotations-3.0.1.jar:"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="/home/isipka"/>
+    <property name="user.language" value="en"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.version.date" value="2021-03-16"/>
+    <property name="java.home" value="/home/isipka/.sdkman/candidates/java/16.ea.26-open"/>
+    <property name="file.separator" value="/"/>
+    <property name="basedir" value="/home/isipka/workspace/byte-buddy/byte-buddy-agent"/>
+    <property name="java.vm.compressedOopsMode" value="Zero based"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="net.bytebuddy.test.integration" value="false"/>
+    <property name="surefire.real.class.path" value="/home/isipka/workspace/byte-buddy/byte-buddy-agent/target/surefire/surefirebooter6741899004431466297.jar"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="java.runtime.version" value="16-ea+26-1764"/>
+    <property name="user.name" value="isipka"/>
+    <property name="path.separator" value=":"/>
+    <property name="os.version" value="5.4.0-52-generic"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="localRepository" value="/home/isipka/.m2/repository"/>
+    <property name="java.vendor.url.bug" value="https://bugreport.java.com/bugreport/"/>
+    <property name="java.io.tmpdir" value="/tmp"/>
+    <property name="idea.version" value="2020.2.3"/>
+    <property name="java.version" value="16-ea"/>
+    <property name="user.dir" value="/home/isipka/workspace/byte-buddy/byte-buddy-agent"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="java.library.path" value="/usr/java/packages/lib:/usr/lib64:/lib64:/lib:/usr/lib"/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="java.vendor" value="Oracle Corporation"/>
+    <property name="java.vm.version" value="16-ea+26-1764"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="java.class.version" value="60.0"/>
+  </properties>
+  <testcase name="testUnavailableAccessor" classname="net.bytebuddy.agent.ByteBuddyAgentAttachmentProviderTest" time="0.005">
+    <failure message="&#10;Expected: is &lt;true&gt;&#10;     but: was &lt;false&gt;" type="java.lang.AssertionError"><![CDATA[java.lang.AssertionError:
+
+Expected: is <true>
+     but: was <false>
+	at net.bytebuddy.agent.ByteBuddyAgentAttachmentProviderTest.testUnavailableAccessor(ByteBuddyAgentAttachmentProviderTest.java:33)
+]]></failure>
+  </testcase>
+  <testcase name="testSimpleAccessorWithoutExternalAttachment" classname="net.bytebuddy.agent.ByteBuddyAgentAttachmentProviderTest" time="0"/>
+  <testcase name="testUnavailableAccessorThrowsExceptionForType" classname="net.bytebuddy.agent.ByteBuddyAgentAttachmentProviderTest" time="0"/>
+  <testcase name="testUnavailableAccessorThrowsExceptionForExternalAttachment" classname="net.bytebuddy.agent.ByteBuddyAgentAttachmentProviderTest" time="0"/>
+  <testcase name="testSimpleAccessor" classname="net.bytebuddy.agent.ByteBuddyAgentAttachmentProviderTest" time="0.291">
+    <failure message="&#10;Expected: is &lt;false&gt;&#10;     but: was &lt;true&gt;" type="java.lang.AssertionError"><![CDATA[java.lang.AssertionError:
+
+Expected: is <false>
+     but: was <true>
+	at net.bytebuddy.agent.ByteBuddyAgentAttachmentProviderTest.testSimpleAccessor(ByteBuddyAgentAttachmentProviderTest.java:20)
+]]></failure>
+  </testcase>
+</testsuite>
