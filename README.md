@@ -16,6 +16,11 @@ For exact semantics of set arithmetic operations please check the immutable and 
 
 The required test report format _seems_ to be a standard format produced by both maven and gradle plugins and also understood by different IDEs. There _may_ be a compatibility issue for older builds since there _seems_ to be two versions/xml schemas of the said format.
 
+How
+-
+    ./gradlew clean shadowJar
+    java -jar build/libs/test-results-diff-all.jar src/test/resources/byte-buddy-1 src/test/resources/byte-buddy-2 
+
 Why
 -
 Simplified analysis of test reports between builds with a single change:

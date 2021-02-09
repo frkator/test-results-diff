@@ -6,12 +6,15 @@
  * User Manual available at https://docs.gradle.org/6.3/userguide/tutorial_java_projects.html
  */
 
+
 plugins {
     // Apply the java plugin to add support for Java
     java
-
+    //id 'com.github.johnrengelman.shadow' version '6.1.0'
     // Apply the application plugin to add support for building a CLI application.
     application
+
+    id("com.github.johnrengelman.shadow") version "6.1.0"
 }
 
 repositories {
@@ -34,7 +37,13 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClassName = "net.java.openjdk.sqe.test.results.diff.App"
+    mainClassName = "com.github.frkator.test.results.diff.App"
+}
+
+tasks.withType<Jar> {
+    manifest {
+        attributes["Main-Class"] = application.mainClassName
+    }
 }
 
 val test by tasks.getting(Test::class) {
