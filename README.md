@@ -21,6 +21,11 @@ How
     ./gradlew clean shadowJar
     java -jar build/libs/test-results-diff-all.jar src/test/resources/byte-buddy-1 src/test/resources/byte-buddy-2 
 
+Setting system properties or having a file named `default.properties` in the current directory will override default properties.
+For details see file `src/resources/help.txt` and for defaults see `src/resources/default.properties`.
+
+Any error with CLI/program arguments will invoke `java.lang.System#exit`. 
+
 Why
 -
 Simplified analysis of test reports between builds with a single change:

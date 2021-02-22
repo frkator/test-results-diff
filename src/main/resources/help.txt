@@ -1,0 +1,9 @@
+Program expects two paths as arguments. These will be recursively searched for test case reports and referred to as left and right respectively.
+Program output can be influenced with properties whose precedence is as follows:
+ - properties provided in command line/programmatically
+ - a property file from the current directory named default.properties
+ - hardcoded properties from within this JAR archive
+Properties:
+ - test.diff.verbose e {true,false} verbose output
+ - test.diff.output.show.{common,left,right} e {true,false} shows common, left or right part of the result
+ - test.diff.output.filter.{common,left,right} - if property exists filtering per status is active - true will show only successful test, false only non successful test

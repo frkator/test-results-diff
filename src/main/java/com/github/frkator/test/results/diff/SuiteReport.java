@@ -36,12 +36,15 @@ public class SuiteReport {
             throw new IllegalStateException("should not happen: removeAll did not result as expected");
         }
 
-        
-        app.printStream.println("only left");
-        app.printStream.println(Util.toString(onlyLeft,ImmutableAndComparableReportTestSuiteFacade::toString));
-        app.printStream.println("only right");
-        app.printStream.println(Util.toString(onlyRight,ImmutableAndComparableReportTestSuiteFacade::toString));
-        if (app.showCommon) {
+        if (app.settings.isShowLeft()) {
+            app.printStream.println("only left");
+            app.printStream.println(Util.toString(onlyLeft, ImmutableAndComparableReportTestSuiteFacade::toString));
+        }
+        if (app.settings.isShowRight()) {
+            app.printStream.println("only right");
+            app.printStream.println(Util.toString(onlyRight, ImmutableAndComparableReportTestSuiteFacade::toString));
+        }
+        if (app.settings.isShowCommon()) {
             app.printStream.println("common");
             app.printStream.println(Util.toString(intersectionLeft, ImmutableAndComparableReportTestSuiteFacade::toString));
         }

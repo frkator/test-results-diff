@@ -19,22 +19,15 @@ public class App {
 
     public final Arguments arguments;
     public final PrintStream printStream;
-    public final boolean showCommon;
-    /*
-     * null - shows all tests
-     * false - shows only failed tests
-     * true - shows only passed tests
-     */
-    public final Boolean showOnly;
+    public final Settings settings;
     public final Set<ImmutableAndComparableReportTestSuiteFacade> leftSet;
     public final Set<ImmutableAndComparableReportTestSuiteFacade> rightSet;
 
 
-    public App(Arguments arguments, PrintStream printStream, boolean showCommon, Boolean showOnly) throws Exception {
+    public App(Arguments arguments, PrintStream printStream, Settings settings) throws Exception {
         this.arguments = arguments;
         this.printStream = printStream;
-        this.showCommon = showCommon;
-        this.showOnly = showOnly;
+        this.settings = settings;
         List<File> leftDirectories = findReportDirectories(arguments.getLeftPath());
         List<File> rightDirectories = findReportDirectories(arguments.getRightPath());
 
@@ -58,7 +51,8 @@ public class App {
 
     public static void main(String[] args) throws Exception {
         Arguments arguments = new Arguments(args);
-        App app = new App(arguments,System.out,false, false);
+        Settings settings = new Settings();
+        App app = new App(arguments,System.out,settings);
         CaseReport caseReport = new CaseReport(app);
         caseReport.process();
     }

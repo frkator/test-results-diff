@@ -18,18 +18,17 @@ public class CaseReport {
                 Collectors.toMap(
                         Map.Entry::getKey,
                         Map.Entry::getValue,
-                        (a,b) ->a,
+                        (a,b) -> a,
                         LinkedHashMap::new
                 )
         );
     }
 
     private Map<ImmutableAndComparableReportTestSuiteFacade, List<ImmutableAndComparableReportTestCaseFacade>> groupCasePerSuite(Set<ImmutableAndComparableReportTestCaseFacade> input, Map<ImmutableAndComparableReportTestCaseFacade, ImmutableAndComparableReportTestSuiteFacade>  index) {
-        return input.stream().collect(Collectors.groupingBy(index::get));
+        return input.stream().collect(Collectors.groupingBy(index::get, LinkedHashMap::new, Collectors.toList()));
     }
 
     public void process() {
-
         Map<ImmutableAndComparableReportTestCaseFacade, ImmutableAndComparableReportTestSuiteFacade> leftInput = suitesPerCaseIndex(app.leftSet);
         Map<ImmutableAndComparableReportTestCaseFacade, ImmutableAndComparableReportTestSuiteFacade> rightInput = suitesPerCaseIndex(app.rightSet);
 
@@ -55,36 +54,43 @@ public class CaseReport {
             throw new IllegalStateException("should not happen: removeAll did not result as expected");
         }
 
-        app.printStream.println("only left");
-        app.printStream.println(casesGroupedPerSuiteToString(onlyLeft,leftInput,app.showOnly));
-        app.printStream.println("only right");
-        app.printStream.println(casesGroupedPerSuiteToString(onlyRight,rightInput,app.showOnly));
-        if (app.showCommon) {
+        if (app.settings.isShowLeft()) {
+            app.printStream.println("only left");
+            app.printStream.println(casesGroupedPerSuiteToString(onlyLeft, leftInput, app.settings.isStatusFilteringLeft(),app.settings.getLeftStatusFilter()));
+        }
+        if (app.settings.isShowRight()) {
+            app.printStream.println("only right");
+            app.printStream.println(casesGroupedPerSuiteToString(onlyRight, rightInput, app.settings.isStatusFilteringRight(),app.settings.getRightStatusFilter()));
+        }
+        if (app.settings.isShowCommon()) {
             app.printStream.println("common");
             var sum = new LinkedHashMap<ImmutableAndComparableReportTestCaseFacade, ImmutableAndComparableReportTestSuiteFacade>();
             sum.putAll(rightInput);
             sum.putAll(leftInput);
-            app.printStream.println(casesGroupedPerSuiteToString(intersectionLeft, sum, app.showOnly));
+            app.printStream.println(casesGroupedPerSuiteToString(intersectionLeft, sum, app.settings.isStatusFilteringCommon(),app.settings.getCommonStatusFilter()));
         }
     }
 
-    private String casesGroupedPerSuiteToString(Set<ImmutableAndComparableReportTestCaseFacade> input, Map<ImmutableAndComparableReportTestCaseFacade, ImmutableAndComparableReportTestSuiteFacade> index, Boolean showOnly) {
+    private String casesGroupedPerSuiteToString(Set<ImmutableAndComparableReportTestCaseFacade> input, Map<ImmutableAndComparableReportTestCaseFacade, ImmutableAndComparableReportTestSuiteFacade> index, boolean filteringOn, boolean filter) {
         Map<ImmutableAndComparableReportTestSuiteFacade, List<ImmutableAndComparableReportTestCaseFacade>> grouped = groupCasePerSuite(input, index);
         StringWriter sw = new StringWriter();
         for (ImmutableAndComparableReportTestSuiteFacade suite : grouped.keySet()) {
-            final LinkedHashSet<ImmutableAndComparableReportTestCaseFacade> set = new LinkedHashSet<>(grouped.get(suite));
-            if (set.size() != grouped.get(suite).size()) {
+            final LinkedHashSet<ImmutableAndComparableReportTestCaseFacade> resultSet = new LinkedHashSet<>(grouped.get(suite));
+            if (resultSet.size() != grouped.get(suite).size()) {
                 throw new IllegalStateException("should not happen: grouping logic error");
             }
-            Set<ImmutableAndComparableReportTestCaseFacade> potentiallyFilteredResults = Optional
-                    .ofNullable(showOnly)
-                    .map(filter -> set.stream().filter(testCase -> testCase.isSuccessful() == filter).collect(Collectors.toCollection(LinkedHashSet::new)))
-                    .orElse(set);
-            if (!potentiallyFilteredResults.isEmpty()) {
+            if (filteringOn) {
+                resultSet.removeAll(
+                    resultSet.stream()
+                        .filter(testCase -> testCase.isSuccessful() != filter)
+                        .collect(Collectors.toSet())
+                );
+            }
+            if (!resultSet.isEmpty()) {
                 sw.write(String.format("%s%n%s%n",
                         suite.toString(),
                         Util.toString(
-                                potentiallyFilteredResults,
+                                resultSet,
                                 ImmutableAndComparableReportTestCaseFacade::toString
                         )
                         )
