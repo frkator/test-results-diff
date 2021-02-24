@@ -17,34 +17,33 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static com.github.frkator.test.results.diff.Preconditions.checkSizes;
 import static java.util.Collections.unmodifiableList;
 import static java.util.Collections.unmodifiableSet;
 import static java.util.stream.Collectors.toCollection;
+import static java.util.stream.Collectors.toList;
 
 public class App {
 
     private static final String SIZE_ERR_MSG = "Suite size doesn't match expected value";
-    public final Arguments arguments;
     public final PrintStream printStream;
     public final Settings settings;
-    public final Set<ImmutableAndComparableReportTestSuiteFacade> leftSet;
-    public final Set<ImmutableAndComparableReportTestSuiteFacade> rightSet;
+
+    public final Set<ReportTestSuiteFacade> leftSet;
+    public final Set<ReportTestSuiteFacade> rightSet;
 
     public static void main(String[] args) throws Exception {
         Arguments arguments = new Arguments(args);
-        Settings settings = new Settings();
-        App app = new App(arguments, System.out, settings);
+        App app = new App(arguments, System.out, new Settings());
         CaseReport caseReport = new CaseReport(app);
         caseReport.process();
     }
 
     public App(Arguments arguments, PrintStream printStream, Settings settings) throws Exception {
-        this.arguments = arguments;
         this.printStream = printStream;
         this.settings = settings;
+
         List<File> leftDirectories = findReportDirectories(arguments.getLeftPath());
         List<File> rightDirectories = findReportDirectories(arguments.getRightPath());
 
@@ -54,8 +53,8 @@ public class App {
         List<ReportTestSuite> leftReportTestSuites = toSorted(leftReportParser.parseXMLReportFiles());
         List<ReportTestSuite> rightReportTestSuites = toSorted(rightReportParser.parseXMLReportFiles());
 
-        this.leftSet = toFacade(leftReportTestSuites);
-        this.rightSet = toFacade(rightReportTestSuites);
+        leftSet = toFacade(leftReportTestSuites);
+        rightSet = toFacade(rightReportTestSuites);
 
         checkSizes(leftReportTestSuites, leftSet, SIZE_ERR_MSG);
         checkSizes(rightReportTestSuites, rightSet, SIZE_ERR_MSG);
@@ -70,12 +69,12 @@ public class App {
                 )
                 .map(p -> p.getParent().toFile())
                 .distinct()
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
-    private Set<ImmutableAndComparableReportTestSuiteFacade> toFacade(List<ReportTestSuite> reportTestSuites) {
-        LinkedHashSet<ImmutableAndComparableReportTestSuiteFacade> facades = reportTestSuites.stream().
-                map(ImmutableAndComparableReportTestSuiteFacade::new)
+    private Set<ReportTestSuiteFacade> toFacade(List<ReportTestSuite> reportTestSuites) {
+        LinkedHashSet<ReportTestSuiteFacade> facades = reportTestSuites.stream().
+                map(ReportTestSuiteFacade::new)
                 .collect(toCollection(LinkedHashSet::new));
 
         return unmodifiableSet(facades);

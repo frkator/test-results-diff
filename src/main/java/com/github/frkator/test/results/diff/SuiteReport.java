@@ -14,10 +14,10 @@ public class SuiteReport {
     public void process() {
 
 
-        Set<ImmutableAndComparableReportTestSuiteFacade> onlyLeft = new LinkedHashSet<>(app.leftSet);
-        Set<ImmutableAndComparableReportTestSuiteFacade> onlyRight = new LinkedHashSet<>(app.rightSet);
-        Set<ImmutableAndComparableReportTestSuiteFacade> intersectionLeft = new LinkedHashSet<>(app.leftSet);
-        Set<ImmutableAndComparableReportTestSuiteFacade> intersectionRight = new LinkedHashSet<>(app.rightSet);
+        Set<ReportTestSuiteFacade> onlyLeft = new LinkedHashSet<>(app.leftSet);
+        Set<ReportTestSuiteFacade> onlyRight = new LinkedHashSet<>(app.rightSet);
+        Set<ReportTestSuiteFacade> intersectionLeft = new LinkedHashSet<>(app.leftSet);
+        Set<ReportTestSuiteFacade> intersectionRight = new LinkedHashSet<>(app.rightSet);
 
         onlyLeft.removeAll(new LinkedHashSet<>(app.rightSet));
         onlyRight.removeAll(app.leftSet);
@@ -38,15 +38,15 @@ public class SuiteReport {
 
         if (app.settings.isShowLeft()) {
             app.printStream.println("only left");
-            app.printStream.println(Util.toString(onlyLeft, ImmutableAndComparableReportTestSuiteFacade::toString));
+            app.printStream.println(Util.toString(onlyLeft, ReportTestSuiteFacade::toString));
         }
         if (app.settings.isShowRight()) {
             app.printStream.println("only right");
-            app.printStream.println(Util.toString(onlyRight, ImmutableAndComparableReportTestSuiteFacade::toString));
+            app.printStream.println(Util.toString(onlyRight, ReportTestSuiteFacade::toString));
         }
         if (app.settings.isShowCommon()) {
             app.printStream.println("common");
-            app.printStream.println(Util.toString(intersectionLeft, ImmutableAndComparableReportTestSuiteFacade::toString));
+            app.printStream.println(Util.toString(intersectionLeft, ReportTestSuiteFacade::toString));
         }
     }
 }

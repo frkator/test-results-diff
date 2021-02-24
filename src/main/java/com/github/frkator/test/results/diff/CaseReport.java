@@ -1,7 +1,11 @@
 package com.github.frkator.test.results.diff;
 
 import java.io.StringWriter;
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class CaseReport {
@@ -11,7 +15,7 @@ public class CaseReport {
         this.app = app;
     }
 
-    private Map<ImmutableAndComparableReportTestCaseFacade,ImmutableAndComparableReportTestSuiteFacade> suitesPerCaseIndex(Set<ImmutableAndComparableReportTestSuiteFacade> input) {
+    private Map<ReportTestCaseFacade, ReportTestSuiteFacade> suitesPerCaseIndex(Set<ReportTestSuiteFacade> input) {
         return input.stream().flatMap( suite ->
                 suite.getTestCases().stream().map(testCase -> Map.entry(testCase, suite))
         ).collect(
@@ -24,18 +28,18 @@ public class CaseReport {
         );
     }
 
-    private Map<ImmutableAndComparableReportTestSuiteFacade, List<ImmutableAndComparableReportTestCaseFacade>> groupCasePerSuite(Set<ImmutableAndComparableReportTestCaseFacade> input, Map<ImmutableAndComparableReportTestCaseFacade, ImmutableAndComparableReportTestSuiteFacade>  index) {
+    private Map<ReportTestSuiteFacade, List<ReportTestCaseFacade>> groupCasePerSuite(Set<ReportTestCaseFacade> input, Map<ReportTestCaseFacade, ReportTestSuiteFacade>  index) {
         return input.stream().collect(Collectors.groupingBy(index::get, LinkedHashMap::new, Collectors.toList()));
     }
 
     public void process() {
-        Map<ImmutableAndComparableReportTestCaseFacade, ImmutableAndComparableReportTestSuiteFacade> leftInput = suitesPerCaseIndex(app.leftSet);
-        Map<ImmutableAndComparableReportTestCaseFacade, ImmutableAndComparableReportTestSuiteFacade> rightInput = suitesPerCaseIndex(app.rightSet);
+        Map<ReportTestCaseFacade, ReportTestSuiteFacade> leftInput = suitesPerCaseIndex(app.leftSet);
+        Map<ReportTestCaseFacade, ReportTestSuiteFacade> rightInput = suitesPerCaseIndex(app.rightSet);
 
-        Set<ImmutableAndComparableReportTestCaseFacade> onlyLeft = new LinkedHashSet<>(leftInput.keySet());
-        Set<ImmutableAndComparableReportTestCaseFacade> onlyRight = new LinkedHashSet<>(rightInput.keySet());
-        Set<ImmutableAndComparableReportTestCaseFacade> intersectionLeft = new LinkedHashSet<>(leftInput.keySet());
-        Set<ImmutableAndComparableReportTestCaseFacade> intersectionRight = new LinkedHashSet<>(rightInput.keySet());
+        Set<ReportTestCaseFacade> onlyLeft = new LinkedHashSet<>(leftInput.keySet());
+        Set<ReportTestCaseFacade> onlyRight = new LinkedHashSet<>(rightInput.keySet());
+        Set<ReportTestCaseFacade> intersectionLeft = new LinkedHashSet<>(leftInput.keySet());
+        Set<ReportTestCaseFacade> intersectionRight = new LinkedHashSet<>(rightInput.keySet());
 
         onlyLeft.removeAll(new LinkedHashSet<>(rightInput.keySet()));
         onlyRight.removeAll(leftInput.keySet());
@@ -64,18 +68,18 @@ public class CaseReport {
         }
         if (app.settings.isShowCommon()) {
             app.printStream.println("common");
-            var sum = new LinkedHashMap<ImmutableAndComparableReportTestCaseFacade, ImmutableAndComparableReportTestSuiteFacade>();
+            var sum = new LinkedHashMap<ReportTestCaseFacade, ReportTestSuiteFacade>();
             sum.putAll(rightInput);
             sum.putAll(leftInput);
             app.printStream.println(casesGroupedPerSuiteToString(intersectionLeft, sum, app.settings.isStatusFilteringCommon(),app.settings.getCommonStatusFilter()));
         }
     }
 
-    private String casesGroupedPerSuiteToString(Set<ImmutableAndComparableReportTestCaseFacade> input, Map<ImmutableAndComparableReportTestCaseFacade, ImmutableAndComparableReportTestSuiteFacade> index, boolean filteringOn, boolean filter) {
-        Map<ImmutableAndComparableReportTestSuiteFacade, List<ImmutableAndComparableReportTestCaseFacade>> grouped = groupCasePerSuite(input, index);
+    private String casesGroupedPerSuiteToString(Set<ReportTestCaseFacade> input, Map<ReportTestCaseFacade, ReportTestSuiteFacade> index, boolean filteringOn, boolean filter) {
+        Map<ReportTestSuiteFacade, List<ReportTestCaseFacade>> grouped = groupCasePerSuite(input, index);
         StringWriter sw = new StringWriter();
-        for (ImmutableAndComparableReportTestSuiteFacade suite : grouped.keySet()) {
-            final LinkedHashSet<ImmutableAndComparableReportTestCaseFacade> resultSet = new LinkedHashSet<>(grouped.get(suite));
+        for (ReportTestSuiteFacade suite : grouped.keySet()) {
+            final LinkedHashSet<ReportTestCaseFacade> resultSet = new LinkedHashSet<>(grouped.get(suite));
             if (resultSet.size() != grouped.get(suite).size()) {
                 throw new IllegalStateException("should not happen: grouping logic error");
             }
@@ -91,7 +95,7 @@ public class CaseReport {
                         suite.toString(),
                         Util.toString(
                                 resultSet,
-                                ImmutableAndComparableReportTestCaseFacade::toString
+                                ReportTestCaseFacade::toString
                         )
                         )
                 );
